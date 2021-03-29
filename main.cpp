@@ -91,14 +91,14 @@ void compileShaders() {
 		"layout (location = 1) in vec3 color; 												\n"
 		"																					\n"
 		"uniform mat4 projection; 															\n"
-		"uniform mat4 translation;															\n"
-		"uniform mat4 scaling;																\n"
+		"uniform mat4 translate;															\n"
 		"uniform mat4 rotation;																\n"
+		"uniform mat4 scaling;																\n"
 		"																					\n"
 		"out vec3 vs_color;  																\n"
 		"																					\n"
 		"void main(void) {					 												\n"
-		"	gl_Position = projection * translation * rotation * scaling * vec4(pos, 1.0);	\n"
+		"	gl_Position = projection * translate * scaling * vec4(pos, 1.0);		\n"
 		"	vs_color = color;																\n"
 		"}																					\n"
 	};
@@ -153,85 +153,44 @@ void draw(vector<GLfloat> vertices, GLsizeiptr size_vertices, GLuint vbo_vertice
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_vertices_index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size_index, index.data(), GL_STATIC_DRAW);
 
+	
 	glDrawElements(type, count, GL_UNSIGNED_SHORT, 0);
-}
-
-void resetRenderTransformations() {
-	valueptr = mat4(1.0f);
-
-	//translation
-	matrix = glGetUniformLocation(program, "translation");
-	valueptr = translate(valueptr, vec3(0.0f, 0.0f, 0.0f));
-	glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
-
-	//scaling
-	matrix = glGetUniformLocation(program, "scaling");
-	valueptr = scale(valueptr, vec3(1.0f, 1.0f, 1.0f));
-	glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
-
-	//rotating
-	matrix = glGetUniformLocation(program, "rotation");
-	valueptr = rotate(valueptr, radians(0.0f), vec3(0.0, 0.0, 1.0));
-	glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
 }
 
 void render() {
 	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(projection));
 
-	resetRenderTransformations();
-
 	GLuint j;
 
 	for (GLuint i = 0; i < objects_transformations.size(); i++) {
+		valueptr = mat4(1.0f);
+
 		j = objects_transformations[i].index;
 
-		valueptr = translate(valueptr, objects_transformations[i].translation);
+		matrix = glGetUniformLocation(program, "scaling");
+		valueptr = scale(valueptr, objects_transformations[i].scaling);
 		glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
 
-		draw(objects[j].vertices, sizeof(objects[j].vertices)*4, vertex_buffer_object,
-			objects[j].colors, sizeof(objects[j].colors)*4, vertex_buffer_object_colors,
+		matrix = glGetUniformLocation(program, "translate");
+		valueptr = translate(valueptr, objects_transformations[i].translation * objects_transformations[i].scaling);
+		glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
+
+		matrix = glGetUniformLocation(program, "rotation");
+		valueptr = rotate(valueptr, radians(objects_transformations[i].rotation.radians), objects_transformations[i].rotation.vec);
+		glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
+
+		draw(objects[j].vertices, sizeof(objects[j].vertices) * 4, vertex_buffer_object,
+			objects[j].colors, sizeof(objects[j].colors) * 4, vertex_buffer_object_colors,
 			objects[j].indexs, sizeof(objects[j].indexs), vertex_buffer_object_index,
 			GL_TRIANGLES, objects[j].indexs.size());
 
-		valueptr = mat4(1.0f);
+	
 	}
 }
 
 void processInput(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
 		switch (key) {
-		case GLFW_KEY_1: {
-			states.exercise = 1;
-			
-			processProject(states);
-
-			break;
-		}
-
-		case GLFW_KEY_2: {
-			states.exercise = 2;
-
-			processProject(states);
-
-			break;
-		}
-
-		case GLFW_KEY_3: {
-			states.exercise = 3;
-
-			processProject(states);
-
-			break;
-		}
-
-		case GLFW_KEY_4: {
-			states.exercise = 4;
-
-			processProject(states);
-
-			break;
-		}
-
 		case GLFW_KEY_TAB: {
 			if (states.wireframe)
 				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);

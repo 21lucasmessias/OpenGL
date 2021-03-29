@@ -74,11 +74,16 @@ vector<GLfloat> window_house_color{
 	0.0f,  0.5f,  0.5f,
 };
 
+vector<GLfloat> sun;
+vector<GLfloat> sun_color;
+vector<GLushort> sun_index;
+
 vector<ObjectProperties> objects {
 	{body, body_index, body_color},
 	{roof, roof_index, roof_color},
 	{door, door_index, door_color},
 	{window_house, window_house_index, window_house_color},
+	{sun, sun_index, sun_color},
 };
 
 vector<ObjectTransformations> objects_transformations;

@@ -2,7 +2,6 @@
 #define PROJECT_H
 
 typedef struct States {
-	int exercise;
 	bool wireframe;
 	bool showBody;
 	bool showRoof;

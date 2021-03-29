@@ -11,6 +11,7 @@
 #define INDEX_ROOF 1
 #define INDEX_DOOR 2
 #define INDEX_WINDOW 3
+#define INDEX_SUN 4
 
 using namespace std;
 using namespace glm;
@@ -21,11 +22,16 @@ struct ObjectProperties {
 	vector<GLfloat> colors;
 };
 
+struct RotationObject {
+	vec3 vec;
+	GLfloat radians;
+};
+
 struct ObjectTransformations {
 	GLushort index;
-	glm::vec3 translation;
-	glm::vec3 rotation;
-	glm::vec3 scaling;
+	vec3 translation;
+	RotationObject rotation;
+	vec3 scaling;
 };
 
 extern vector<ObjectProperties> objects;
