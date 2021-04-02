@@ -7,6 +7,12 @@ typedef struct States {
 	bool showRoof;
 	bool showDoor;
 	bool showWindows;
+	char transformationType;
+
+	float offset_h;
+	float offset_v;
 } States;
+
+States states;
 
 #endif

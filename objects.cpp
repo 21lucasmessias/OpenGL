@@ -1,15 +1,16 @@
 #include "objects.hpp"
 
 vector<GLfloat> body{
-	0.0f,  0.0f,  0.0f,
-	20.0f, 0.0f,  0.0f,
-	20.0f, 20.0f, 0.0f,
-	0.0f,  20.0f, 0.0f,
+	0.0f,  0.0f,  1.0f,
+	20.0f, 0.0f,  1.0f,
+	20.0f, 20.0f, 1.0f,
+	0.0f,  20.0f, 1.0f,
 };
 
 vector<GLushort> body_index{
 	0, 1, 2,
-	0, 2, 3
+	0, 2, 3,
+	4, 5, 6,
 };
 
 vector<GLfloat> body_color{
@@ -20,9 +21,9 @@ vector<GLfloat> body_color{
 };
 
 vector<GLfloat> roof{
-	20.0f, 0.0f, 0.0f,
-	0.0f,  0.0f, 0.0f,
-	10.0f, 10.0f, 0.0f
+	0.0f,  0.0f,  1.0f,
+	20.0f, 0.0f,  1.0f,
+	10.0f, 10.0f, 1.0f
 };
 
 vector<GLushort> roof_index{
@@ -33,14 +34,13 @@ vector<GLfloat> roof_color{
 	0.0f,  0.0f,  1.0f,
 	0.0f,  0.0f,  1.0f,
 	0.0f,  0.0f,  1.0f,
-	0.0f,  0.0f,  1.0f,
 };
 
 vector<GLfloat> door{
-	0.0f,  0.0f,  0.0f,
-	5.0f,  0.0f,  0.0f,
-	5.0f,  10.0f, 0.0f,
-	0.0f,  10.0f, 0.0f,
+	0.0f,  0.0f,  -1.0f,
+	5.0f,  0.0f,  -1.0f,
+	5.0f,  10.0f, -1.0f,
+	0.0f,  10.0f, -1.0f,
 };
 
 vector<GLushort> door_index{
@@ -56,11 +56,11 @@ vector<GLfloat> door_color{
 };
 
 vector<GLfloat> window_house{
-	0.0f,  0.0f, 0.0f,
-	5.0f,  0.0f, 0.0f,
-	5.0f,  5.0f, 0.0f,
-	0.0f,  5.0f, 0.0f,
-};
+	0.0f,  0.0f, 2.0f,
+	5.0f,  0.0f, 2.0f,
+	5.0f,  5.0f, 2.0f,
+	0.0f,  5.0f, 2.0f,
+};				 
 
 vector<GLushort> window_house_index{
 	0, 1, 2,
@@ -75,8 +75,8 @@ vector<GLfloat> window_house_color{
 };
 
 vector<GLfloat> sun;
-vector<GLfloat> sun_color;
 vector<GLushort> sun_index;
+vector<GLfloat> sun_color;
 
 vector<ObjectProperties> objects {
 	{body, body_index, body_color},

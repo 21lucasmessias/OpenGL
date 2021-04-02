@@ -11,8 +11,8 @@
 #include <glm/ext/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
-#include "states.hpp"
 #include "objects.hpp"
+#include "hotkeys.hpp"
 
 #include "myproject.hpp"
 
@@ -25,8 +25,6 @@ const int HEIGHT = 800;
 GLFWwindow* window = NULL;
 const GLfloat color[] = { 0.0f, 0.8f, 0.8f, 1.0f };
 
-States states;
-
 GLuint program;
 GLuint vertex_array_object;
 GLuint vertex_buffer_object;
@@ -36,7 +34,7 @@ GLuint vertex_buffer_object_colors;
 mat4 valueptr;
 GLuint matrix;
 GLint modelLoc;
-mat4 projection = ortho(-50.0f, 50.0f, -50.0f, 50.0f, -5.0f, 5.0f);
+mat4 projection = ortho(0.0f, 100.0f, 0.0f, 100.0f, -5.0f, 5.0f);
 
 int initalization() {
 	if (!glfwInit()) {
@@ -98,7 +96,7 @@ void compileShaders() {
 		"out vec3 vs_color;  																\n"
 		"																					\n"
 		"void main(void) {					 												\n"
-		"	gl_Position = projection * translate * scaling * vec4(pos, 1.0);		\n"
+		"	gl_Position = projection * translate * rotation * scaling * vec4(pos, 1.0f);	\n"
 		"	vs_color = color;																\n"
 		"}																					\n"
 	};
@@ -138,10 +136,9 @@ void compileShaders() {
 }
 
 void draw(vector<GLfloat> vertices, GLsizeiptr size_vertices, GLuint vbo_vertices,
-		  vector<GLfloat> colors,   GLsizeiptr size_colors,   GLuint vbo_colors,
-		  vector<GLushort> index,	GLsizeiptr size_index,    GLuint vbo_vertices_index,
+		  vector<GLfloat> colors, GLsizeiptr size_colors, GLuint vbo_colors,
+	 	  vector<GLushort> index, GLsizeiptr size_index, GLuint vbo_vertices_index,
 		  GLenum type, GLsizei count) {
-	
 	glBindBuffer(GL_ARRAY_BUFFER, vbo_vertices);
 	glBufferData(GL_ARRAY_BUFFER, size_vertices, vertices.data(), GL_STATIC_DRAW);
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 0, (void*)0);
@@ -153,7 +150,6 @@ void draw(vector<GLfloat> vertices, GLsizeiptr size_vertices, GLuint vbo_vertice
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, vbo_vertices_index);
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, size_index, index.data(), GL_STATIC_DRAW);
 
-	
 	glDrawElements(type, count, GL_UNSIGNED_SHORT, 0);
 }
 
@@ -162,7 +158,16 @@ void render() {
 
 	GLuint j;
 
+	const GLfloat radius = 55.0f;
+
+	GLfloat camX = ((GLfloat)sin(glfwGetTime())) * 1.2f * radius + 50.0f;
+	GLfloat camY = ((GLfloat)cos(glfwGetTime())) * radius;
+
+	objects_transformations[0].translation[0] = camX;
+	objects_transformations[0].translation[1] = camY;
+
 	for (GLuint i = 0; i < objects_transformations.size(); i++) {
+
 		valueptr = mat4(1.0f);
 
 		j = objects_transformations[i].index;
@@ -176,94 +181,16 @@ void render() {
 		glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
 
 		matrix = glGetUniformLocation(program, "rotation");
-		valueptr = rotate(valueptr, radians(objects_transformations[i].rotation.radians), objects_transformations[i].rotation.vec);
+		valueptr = rotate(mat4(1.0f), radians(objects_transformations[i].rotation.radians), objects_transformations[i].rotation.vec);
 		glUniformMatrix4fv(matrix, 1, GL_FALSE, value_ptr(valueptr));
 
-		draw(objects[j].vertices, sizeof(objects[j].vertices) * 4, vertex_buffer_object,
-			objects[j].colors, sizeof(objects[j].colors) * 4, vertex_buffer_object_colors,
-			objects[j].indexs, sizeof(objects[j].indexs), vertex_buffer_object_index,
-			GL_TRIANGLES, objects[j].indexs.size());
-
-	
+		draw(objects[j].vertices, objects[j].vertices.size() * 4, vertex_buffer_object,
+			 objects[j].colors, objects[j].colors.size() * 4, vertex_buffer_object_colors,
+			 objects[j].indexs, objects[j].indexs.size() * 2, vertex_buffer_object_index,
+			 GL_TRIANGLES, objects[j].indexs.size());
 	}
-}
 
-void processInput(GLFWwindow* window, int key, int scancode, int action, int mods) {
-	if (action == GLFW_PRESS) {
-		switch (key) {
-		case GLFW_KEY_TAB: {
-			if (states.wireframe)
-				glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-			else
-				glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
-			states.wireframe = !states.wireframe;
-
-			break;
-		}
-
-		case GLFW_KEY_ESCAPE: {
-			glfwSetWindowShouldClose(window, true);
-
-			break;
-		}
-
-		case GLFW_KEY_B: {
-			//states.showBody = !states.showBody;
-
-			for (GLuint i = 0; i < objects_transformations.size(); i++) {
-				if (objects_transformations[i].index == INDEX_BODY) {
-					objects_transformations.erase(objects_transformations.begin() + i);
-					i--;
-				}
-			}
-
-			break;
-		}
-
-		case GLFW_KEY_R: {
-			//states.showRoof = !states.showRoof;
-
-			for (GLuint i = 0; i < objects_transformations.size(); i++) {
-				if (objects_transformations[i].index == INDEX_ROOF) {
-					objects_transformations.erase(objects_transformations.begin() + i);
-					i--;
-				}
-			}
-
-			break;
-		}
-
-		case GLFW_KEY_W: {
-			//states.showWindows = !states.showWindows;
-
-			for (GLuint i = 0; i < objects_transformations.size(); i++) {
-				if (objects_transformations[i].index == INDEX_WINDOW) {
-					objects_transformations.erase(objects_transformations.begin() + i);
-					i--;
-				}
-			}
-
-			break;
-		}
-
-		case GLFW_KEY_D: {
-			//states.showDoor = !states.showDoor;
-
-			for (GLuint i = 0; i < objects_transformations.size(); i++) {
-				if (objects_transformations[i].index == INDEX_DOOR) {
-					objects_transformations.erase(objects_transformations.begin() + i);
-					i--;
-				}
-			}
-
-			break;
-		}
-		default:
-			break;
-
-		}
-	}
 }
 
 void startup() {
@@ -302,12 +229,13 @@ int main() {
 
 	startup();
 
-	processProject(states);
+	processProject();
 
 	while (!glfwWindowShouldClose(window)) {
 		glfwPollEvents();
 
 		glClearBufferfv(GL_COLOR, 0, color);
+		glClear(GL_DEPTH_BUFFER_BIT);
 
 		render();
 
