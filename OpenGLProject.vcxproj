@@ -146,12 +146,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="main.cpp" />
     <ClCompile Include="hotkeys.cpp" />
     <ClCompile Include="objects.cpp" />
-    <ClCompile Include="main.cpp" />
     <ClCompile Include="myproject.cpp" />
+    <ClCompile Include="states.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main.hpp" />
     <ClInclude Include="hotkeys.hpp" />
     <ClInclude Include="objects.hpp" />
     <ClInclude Include="myproject.hpp" />

@@ -1,6 +1,4 @@
 #include "hotkeys.hpp"
-#include "states.hpp"
-#include "objects.hpp"
 
 void processInput(GLFWwindow* window, int key, int scancode, int action, int mods) {
 	if (action == GLFW_PRESS) {
@@ -81,43 +79,101 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		}
 
 		case GLFW_KEY_P: {
-			states.transformationType = 'm';
+			states.transformationMode = 0;
 
 			break;
 		}
 
 		case GLFW_KEY_O: {
-			states.transformationType = 'r';
+			states.transformationMode = 1;
 
 			break;
 		}
 
 		case GLFW_KEY_I: {
-			states.transformationType = 'd';
+			states.transformationMode = 2;
 
 			break;
 		}
 
 		case GLFW_KEY_LEFT: {
-			states.offset_h -= 1;
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[0] -= 1;
+					}
+				}
+			}
 
 			break;
 		}
 
 		case GLFW_KEY_UP: {
-			states.offset_v += 1;
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] += 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 1) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].rotation.radians += 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 2) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] += 1;
+						objects_transformations[i].rotation.radians += 1;
+					}
+				}
+			}
 
 			break;
 		}
 
 		case GLFW_KEY_DOWN: {
-			states.offset_v -= 1;
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] -= 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 1) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].rotation.radians -= 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 2) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] -= 1;
+						objects_transformations[i].rotation.radians -= 1;
+					}
+				}
+			}
 
 			break;
 		}
 
 		case GLFW_KEY_RIGHT: {
-			states.offset_h += 1;
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[0] += 1;
+					}
+				}
+			}
 
 			break;
 		}
@@ -125,6 +181,82 @@ void processInput(GLFWwindow* window, int key, int scancode, int action, int mod
 		default:
 			break;
 
+		}
+	}
+
+	if (action == GLFW_REPEAT) {
+		if (key == GLFW_KEY_UP) {
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] += 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 1) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].rotation.radians += 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 2) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] += 1;
+						objects_transformations[i].rotation.radians += 1;
+					}
+				}
+			}
+		}
+
+		else if (key == GLFW_KEY_DOWN) {
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] -= 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 1) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].rotation.radians -= 1;
+					}
+				}
+			}
+
+			else if (states.transformationMode == 2) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[1] -= 1;
+						objects_transformations[i].rotation.radians -= 1;
+					}
+				}
+			}
+		}
+
+		else if (key == GLFW_KEY_LEFT) {
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[0] -= 1;
+					}
+				}
+			}
+		}
+
+		else if (key == GLFW_KEY_RIGHT) {
+			if (states.transformationMode == 0) {
+				for (GLuint i = 0; i < objects_transformations.size(); i++) {
+					if (objects_transformations[i].index != INDEX_SUN && objects_transformations[i].index != INDEX_BODY) {
+						objects_transformations[i].translation[0] += 1;
+					}
+				}
+			}
 		}
 	}
 }

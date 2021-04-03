@@ -1,20 +1,4 @@
-#include <Windows.h>
-#include <iostream>
-
-#define GLEW_STATIC
-
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
-#include <GL/GL.h>
-
-#include <glm/glm.hpp>
-#include <glm/ext/matrix_transform.hpp>
-#include <glm/gtc/type_ptr.hpp>
-
-#include "objects.hpp"
-#include "hotkeys.hpp"
-
-#include "myproject.hpp"
+#include "main.hpp"
 
 using namespace std;
 using namespace glm;

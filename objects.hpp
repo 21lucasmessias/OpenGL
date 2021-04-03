@@ -1,11 +1,7 @@
 #ifndef OBJECTS_H
 #define OBJECTS_H
 
-#include <Windows.h>
-#include <GL/GL.h>
-#include <glm/glm.hpp>
-
-#include <vector>
+#include "main.hpp"
 
 #define INDEX_BODY 0
 #define INDEX_ROOF 1

@@ -1,5 +1,4 @@
-#include <iostream>
-#include "objects.hpp"
+#include "myproject.hpp"
 
 using namespace std;
 
@@ -34,27 +33,65 @@ void bufferSun() {
 	}
 }
 
+void updateOriginToCenter() {
+	GLfloat middle_horizontal = 0;
+	GLfloat middle_vertical = 0;
+	GLuint v;
+
+	for (int i = 0; i < objects.size(); i++) {
+		middle_horizontal = 0;
+		middle_vertical = 0;
+
+		for (v = 0; v < objects[i].vertices.size(); v++) {
+			if ((v + 1) % 3 == 1) {
+				if (objects[i].vertices[v] > middle_horizontal) {
+					middle_horizontal = objects[i].vertices[v];
+				}
+			}
+			if ((v + 1) % 3 == 2) {
+				if (objects[i].vertices[v] > middle_vertical) {
+					middle_vertical = objects[i].vertices[v];
+				}
+			}
+		}
+
+		middle_horizontal = middle_horizontal/2;
+		middle_vertical = middle_vertical/2;
+
+		for (v = 0; v < objects[i].vertices.size(); v++) {
+			if ((v + 1) % 3 == 1) {
+				objects[i].vertices[v] = objects[i].vertices[v] - middle_horizontal;
+			}
+			else if ((v + 1) % 3 == 2) {
+				objects[i].vertices[v] = objects[i].vertices[v] - middle_vertical;
+			}
+		}
+	}
+}
+
 void processProject() {
 	bufferSun();
 
-	objects_transformations.push_back({ INDEX_SUN,		vec3(0.0f, 50.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
+	updateOriginToCenter();
 
-	objects_transformations.push_back({ INDEX_BODY,		vec3(5.0f,  0.0f,  1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
-	objects_transformations.push_back({ INDEX_ROOF,		vec3(5.0f,  20.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
-	objects_transformations.push_back({ INDEX_DOOR,		vec3(17.0f, 0.0f,  1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(17.0f, 12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(8.0f,  12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
+	objects_transformations.push_back({ INDEX_SUN,		vec3(0.0f, 50.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
 
-	objects_transformations.push_back({ INDEX_BODY,		vec3(30.0f,  0.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
-	objects_transformations.push_back({ INDEX_ROOF,		vec3(30.0f, 20.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
-	objects_transformations.push_back({ INDEX_DOOR,		vec3(42.0f,  0.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(42.0f, 12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(33.0f, 12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.0f,1.0f,1.0f) });
+	objects_transformations.push_back({ INDEX_BODY,		vec3(15.0f, 10.0f, 1.0f),	{vec3( 0.0f, 0.0f, 1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
+	objects_transformations.push_back({ INDEX_ROOF,		vec3(15.0f,	25.0f, 1.0f),	{vec3( 0.0f, 0.0f, 1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
+	objects_transformations.push_back({ INDEX_DOOR,		vec3(20.0f, 5.0f, 1.0f),	{vec3( 0.0f, 0.0f, 1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(10.0f, 14.5f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(0.75f,0.75f,0.75f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(20.0f,	14.5f, 1.0f),	{vec3( 0.0f, 0.0f, 1.0f), 0.0f},	vec3(0.75f,0.75f,0.75f) });
+																	
+	objects_transformations.push_back({ INDEX_BODY,		vec3(40.0f, 10.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
+	objects_transformations.push_back({ INDEX_ROOF,		vec3(40.0f, 25.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
+	objects_transformations.push_back({ INDEX_DOOR,		vec3(45.0f, 5.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(45.0f, 14.5f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(35.0f, 14.5f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.0f,1.0f,1.0f) });
 
-	objects_transformations.push_back({ INDEX_BODY,		vec3(40.0f,  0.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.25f,1.25f,1.25f) });
-	objects_transformations.push_back({ INDEX_ROOF,		vec3(40.0f, 20.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.25f,1.25f,1.25f) });
-	objects_transformations.push_back({ INDEX_DOOR,		vec3(52.0f,  0.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.25f,1.25f,1.25f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(52.0f, 12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.25f,1.25f,1.25f) });
-	objects_transformations.push_back({ INDEX_WINDOW,	vec3(43.0f, 12.0f, 1.0f),	{vec3(0.0f,0.0f,1.0f), 0.0f},	vec3(1.25f,1.25f,1.25f) });
-}
+	objects_transformations.push_back({ INDEX_BODY,		vec3(50.0f, 10.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f },	vec3(1.25f,1.25f,1.25f) });
+	objects_transformations.push_back({ INDEX_ROOF,		vec3(50.0f, 25.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.25f,1.25f,1.25f) });
+	objects_transformations.push_back({ INDEX_DOOR,		vec3(55.0f, 5.0f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.25f,1.25f,1.25f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(55.0f, 14.5f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.25f,1.25f,1.25f) });
+	objects_transformations.push_back({ INDEX_WINDOW,	vec3(45.0f, 14.5f, 1.0f),	{vec3(0.0f, 0.0f, 1.0f), 0.0f},		vec3(1.25f,1.25f,1.25f) });
+}																  
 

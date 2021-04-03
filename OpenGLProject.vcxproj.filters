@@ -15,11 +15,11 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="objects.cpp">
-      <Filter>Arquivos de Recurso</Filter>
-    </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>Arquivos de Origem</Filter>
+    </ClCompile>
+    <ClCompile Include="objects.cpp">
+      <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
     <ClCompile Include="myproject.cpp">
       <Filter>Arquivos de Recurso</Filter>
@@ -27,8 +27,14 @@
     <ClCompile Include="hotkeys.cpp">
       <Filter>Arquivos de Recurso</Filter>
     </ClCompile>
+    <ClCompile Include="states.cpp">
+      <Filter>Arquivos de Recurso</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="main.hpp">
+      <Filter>Arquivos de Cabeçalho</Filter>
+    </ClInclude>
     <ClInclude Include="states.hpp">
       <Filter>Arquivos de Cabeçalho</Filter>
     </ClInclude>
