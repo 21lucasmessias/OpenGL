@@ -109,8 +109,8 @@ void handleRenderProject() {
 		}
 
 		else if (objects_transformations[3].translation[0] == objects_transformations[4].translation[0] - 260.0f &&
-			objects_transformations[4].translation[1] + 20.0f >= (objects_transformations[3].translation[1] - 5.0f) * 4 &&
-			objects_transformations[4].translation[1] - 20.0f <= (objects_transformations[3].translation[1] + 5.0f) * 4) {
+			objects_transformations[4].translation[1] + 10.0f >= (objects_transformations[3].translation[1] - 5.0f) * 4 &&
+			objects_transformations[4].translation[1] - 10.0f <= (objects_transformations[3].translation[1] + 5.0f) * 4) {
 			states.offset_x_1 = states.offset_x_1 * -1;
 		}
 
