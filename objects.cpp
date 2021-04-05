@@ -74,6 +74,44 @@ vector<GLfloat> window_house_color{
 	0.0f,  0.5f,  0.5f,
 };
 
+vector<GLfloat> racket{
+	0.0f, 0.0f, 1.0f,
+	5.0f, 0.0f, 1.0f,
+	5.0f, 10.0f, 1.0f,
+	0.0f, 10.0f, 1.0f
+};
+
+vector<GLushort> racket_index{
+	0, 1, 2,
+	0, 2, 3
+};
+
+vector<GLfloat> racket_color{
+	1.0f,  0.5f,  0.5f,
+	1.0f,  0.5f,  0.5f,
+	1.0f,  0.5f,  0.5f,
+	1.0f,  0.5f,  0.5f,
+};
+
+vector<GLfloat> wall{
+	0.0f, 0.0f, 1.0f,
+	100.0f, 0.0f, 1.0f,
+	100.0f, 10.0f, 1.0f,
+	0.0f, 10.0f, 1.0f
+};
+
+vector<GLushort> wall_index{
+	0, 1, 2,
+	0, 2, 3
+};
+
+vector<GLfloat> wall_color{
+	0.0f,  0.0f,  0.0f,
+	0.0f,  0.0f,  0.0f,
+	0.0f,  0.0f,  0.0f,
+	0.0f,  0.0f,  0.0f,
+};
+
 vector<GLfloat> sun;
 vector<GLushort> sun_index;
 vector<GLfloat> sun_color;
@@ -84,6 +122,8 @@ vector<ObjectProperties> objects {
 	{door, door_index, door_color},
 	{window_house, window_house_index, window_house_color},
 	{sun, sun_index, sun_color},
+	{racket, racket_index, racket_color},
+	{wall, wall_index, wall_color}
 };
 
 vector<ObjectTransformations> objects_transformations;

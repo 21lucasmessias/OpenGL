@@ -18,7 +18,6 @@ GLuint vertex_buffer_object_colors;
 mat4 valueptr;
 GLuint matrix;
 GLint modelLoc;
-mat4 projection = ortho(0.0f, 100.0f, 0.0f, 100.0f, -5.0f, 5.0f);
 
 int initalization() {
 	if (!glfwInit()) {
@@ -138,20 +137,13 @@ void draw(vector<GLfloat> vertices, GLsizeiptr size_vertices, GLuint vbo_vertice
 }
 
 void render() {
-	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(projection));
+	glUniformMatrix4fv(modelLoc, 1, GL_FALSE, value_ptr(states.projection));
 
 	GLuint j;
 
-	const GLfloat radius = 55.0f;
-
-	GLfloat camX = ((GLfloat)sin(glfwGetTime())) * 1.2f * radius + 50.0f;
-	GLfloat camY = ((GLfloat)cos(glfwGetTime())) * radius;
-
-	objects_transformations[0].translation[0] = camX;
-	objects_transformations[0].translation[1] = camY;
+	handleRenderProject();
 
 	for (GLuint i = 0; i < objects_transformations.size(); i++) {
-
 		valueptr = mat4(1.0f);
 
 		j = objects_transformations[i].index;
@@ -194,6 +186,7 @@ void startup() {
 	glEnableVertexAttribArray(1);
 
 	modelLoc = glGetUniformLocation(program, "projection");
+
 	glUseProgram(program);
 }
 
@@ -213,6 +206,7 @@ int main() {
 
 	startup();
 
+	updateOriginToCenter();
 	processProject();
 
 	while (!glfwWindowShouldClose(window)) {

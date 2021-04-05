@@ -8,6 +8,8 @@
 #define INDEX_DOOR 2
 #define INDEX_WINDOW 3
 #define INDEX_SUN 4
+#define INDEX_RACKET 5
+#define INDEX_WALL 6
 
 using namespace std;
 using namespace glm;
